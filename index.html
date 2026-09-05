@@ -616,7 +616,7 @@
             const dateObj = new Date(dateValue);
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const formattedDate = dateObj.toLocaleDateString('id-ID', options);
-            const finalDateTime = `${formattedDate} • Jam ${timeValue}`;
+            const finalDateTime = `${formattedDate} Jam ${timeValue}`;
             
             // Format List untuk HTML agar lebih cantik
             const htmlActivities = selectedActivities.map(act => `<li class="flex items-center gap-2"><span class="text-pink-500 text-lg">🌸</span> ${act}</li>`).join('');
