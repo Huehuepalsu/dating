@@ -99,7 +99,7 @@
 
     <div id="hearts-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
-    <div class="max-w-md w-full bg-white/95 backdrop-blur-md rounded-[3rem] shadow-[0_20px_60px_-15px_rgba(255,105,180,0.5)] border-4 border-pink-200 p-8 relative z-10 text-center">
+    <div class="max-w-md w-full bg-white/95 backdrop-blur-md rounded-[2rem] sm:rounded-[3rem] shadow-[0_20px_60px_-15px_rgba(255,105,180,0.5)] border-4 border-pink-200 p-6 sm:p-8 relative z-10 text-center">
         
         <!-- Ornamen lucu di pojok atas -->
         <div class="absolute -top-4 -right-4 text-4xl rotate-12 drop-shadow-md">🎀</div>
@@ -107,22 +107,22 @@
         
         <!-- STEP 1: Halaman Ajakan Pertama -->
         <div id="step-1" class="flex flex-col items-center transition-all duration-500">
-            <h1 class="text-3xl font-black text-gray-800 mb-6 drop-shadow-sm leading-tight">
+            <h1 class="text-2xl sm:text-3xl font-black text-gray-800 mb-6 drop-shadow-sm leading-tight">
                 Hai Cacaa... <br> 
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-pink-500 text-4xl">Mau main bareng ga?</span> 🥺
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-pink-500 text-3xl sm:text-4xl">Mau main bareng ga?</span> 🥺
             </h1>
             
             <div class="p-2 bg-pink-50 rounded-[2rem] border-4 border-dashed border-pink-300 mb-8 floating-img shadow-sm">
-                <img src="awalan kucing.gif" alt="Cute begging cat" class="w-48 h-48 object-cover rounded-[1.5rem]">
+                <img src="awalan kucing.gif" alt="Cute begging cat" class="w-40 h-40 sm:w-48 sm:h-48 object-cover rounded-[1.5rem]">
             </div>
             
-            <div class="flex flex-wrap gap-6 items-center justify-center w-full relative min-h-[6rem]">
+            <div class="flex flex-row flex-wrap gap-4 sm:gap-6 items-center justify-center w-full relative min-h-[6rem]">
                 <!-- Tombol Mau 3D -->
-                <button id="btn-yes" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-3 px-10 rounded-full btn-3d text-xl z-20 border-2 border-pink-300">
+                <button id="btn-yes" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-3 px-8 sm:px-10 rounded-full btn-3d text-lg sm:text-xl z-20 border-2 border-pink-300">
                     MAU! 🥰
                 </button>
                 <!-- Tombol Nggak -->
-                <button id="btn-no" class="bg-slate-100 text-slate-500 font-bold py-3 px-8 rounded-full btn-3d-gray text-lg relative z-10 border-2 border-slate-200">
+                <button id="btn-no" class="bg-slate-100 text-slate-500 font-bold py-3 px-6 sm:px-8 rounded-full btn-3d-gray text-base sm:text-lg relative z-10 border-2 border-slate-200">
                     Nggak
                 </button>
             </div>
@@ -130,44 +130,44 @@
 
         <div id="step-yay" class="hidden opacity-0 flex-col items-center transition-all duration-500">
             <div class="p-2 bg-yellow-50 rounded-[2rem] border-4 border-dashed border-yellow-300 mb-6 shadow-sm floating-img">
-                <img src="awalan kucing 2.gif" alt="Yay bear" class="w-48 h-48 object-cover rounded-[1.5rem]">
+                <img src="awalan kucing 2.gif" alt="Yay bear" class="w-40 h-40 sm:w-48 sm:h-48 object-cover rounded-[1.5rem]">
             </div>
             
-            <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-pink-500 mb-2 drop-shadow-sm">YAYY!</h1>
-            <p class="text-pink-600 font-bold mb-8 text-xl">Seneng bangetttt! 🎉</p>
+            <h1 class="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-pink-500 mb-2 drop-shadow-sm">YAYY!</h1>
+            <p class="text-pink-600 font-bold mb-8 text-lg sm:text-xl">Seneng bangetttt! 🎉</p>
             
-            <button id="btn-continue" class="bg-white border-4 border-pink-200 text-pink-500 hover:bg-pink-50 hover:border-pink-400 font-black py-3 px-8 rounded-full shadow-lg transition-all duration-300 text-lg group flex items-center gap-2 mx-auto">
-                Lanjut <span class="group-hover:translate-x-2 transition-transform text-2xl">👉</span>
+            <button id="btn-continue" class="bg-white border-4 border-pink-200 text-pink-500 hover:bg-pink-50 hover:border-pink-400 font-black py-3 px-8 rounded-full shadow-lg transition-all duration-300 text-base sm:text-lg group flex items-center gap-2 mx-auto">
+                Lanjut <span class="group-hover:translate-x-2 transition-transform text-xl sm:text-2xl">👉</span>
             </button>
         </div>
 
         <div id="step-date" class="hidden opacity-0 flex-col items-center transition-all duration-500">
-            <div class="text-5xl mb-2">🗓️</div>
-            <h2 class="text-3xl font-black text-gray-800 mb-2">Atur Waktu Yuk!</h2>
-            <p class="text-pink-500 mb-6 font-bold text-lg">Kapan nih enaknya kita jalan?</p>
+            <div class="text-4xl sm:text-5xl mb-2">🗓️</div>
+            <h2 class="text-2xl sm:text-3xl font-black text-gray-800 mb-2">Atur Waktu Yuk!</h2>
+            <p class="text-pink-500 mb-6 font-bold text-sm sm:text-lg">Kapan nih enaknya kita jalan?</p>
             
-            <div class="w-full mb-6 text-left flex gap-4">
+            <div class="w-full mb-6 text-left flex flex-col sm:flex-row gap-4">
                 <div class="flex-[2]">
                     <label class="text-sm font-black text-fuchsia-500 ml-2 mb-1 block">TANGGAL</label>
-                    <input type="date" id="date-picker" class="w-full p-4 rounded-2xl border-4 border-pink-100 bg-pink-50 focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 outline-none text-gray-700 font-bold transition-all text-lg shadow-inner cursor-pointer">
+                    <input type="date" id="date-picker" class="w-full p-3 sm:p-4 rounded-2xl border-4 border-pink-100 bg-pink-50 focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 outline-none text-gray-700 font-bold transition-all text-base sm:text-lg shadow-inner cursor-pointer">
                 </div>
                 <div class="flex-[1]">
                     <label class="text-sm font-black text-fuchsia-500 ml-2 mb-1 block">JAM</label>
-                    <input type="time" id="time-picker" class="w-full p-4 rounded-2xl border-4 border-pink-100 bg-pink-50 focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 outline-none text-gray-700 font-bold transition-all text-lg shadow-inner cursor-pointer">
+                    <input type="time" id="time-picker" class="w-full p-3 sm:p-4 rounded-2xl border-4 border-pink-100 bg-pink-50 focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 outline-none text-gray-700 font-bold transition-all text-base sm:text-lg shadow-inner cursor-pointer">
                 </div>
             </div>
 
             <p id="error-date" class="text-white text-sm font-bold mb-6 hidden bg-rose-400 p-3 rounded-xl w-full animate-bounce shadow-lg">⚠️ Tentukan tanggal & jamnya dulu donggg!</p>
             
-            <button id="btn-next-activity" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-4 px-8 rounded-full btn-3d w-full text-lg mt-2 border-2 border-pink-300">
+            <button id="btn-next-activity" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-3 sm:py-4 px-8 rounded-full btn-3d w-full text-base sm:text-lg mt-2 border-2 border-pink-300">
                 Lanjut Pilih Mainnya ➔
             </button>
         </div>
 
         <div id="step-activity" class="hidden opacity-0 flex-col items-center transition-all duration-500">
-            <div class="text-5xl mb-2">🎡</div>
-            <h2 class="text-3xl font-black text-gray-800 mb-2">Ngapain Aja?</h2>
-            <p class="text-pink-500 mb-6 font-bold">Pilih sesukamu (boleh lebih dari 1 kok) ✨</p>
+            <div class="text-4xl sm:text-5xl mb-2">🎡</div>
+            <h2 class="text-2xl sm:text-3xl font-black text-gray-800 mb-2">Ngapain Aja?</h2>
+            <p class="text-pink-500 mb-5 sm:mb-6 font-bold text-sm sm:text-base">Pilih sesukamu (boleh lebih dari 1 kok) ✨</p>
             
             <div class="w-full mb-6 text-left">
                 <!-- Checkbox lucu -->
@@ -269,61 +269,61 @@
 
             <p id="error-activity" class="text-white text-sm font-bold mb-6 hidden bg-rose-400 p-3 rounded-xl w-full animate-bounce shadow-lg">⚠️ Dipilih dulu dong minimal 1! 🥺</p>
             
-            <button id="btn-confirm" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-4 px-8 rounded-full btn-3d w-full text-lg mt-2 border-2 border-pink-300">
+            <button id="btn-confirm" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-3 sm:py-4 px-8 rounded-full btn-3d w-full text-base sm:text-lg mt-2 border-2 border-pink-300">
                 Kirim Rencananya! 🚀
             </button>
         </div>
 
         <div id="step-3" class="hidden opacity-0 flex-col items-center transition-all duration-500">
-            <h2 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-fuchsia-500 mb-4 drop-shadow-sm leading-tight">YEYY!<br>Sampai Jumpa Nanti! 💕</h2>
+            <h2 class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-fuchsia-500 mb-4 drop-shadow-sm leading-tight">YEYY!<br>Sampai Jumpa Nanti! 💕</h2>
             
             <div class="p-2 bg-pink-100 rounded-full border-4 border-dashed border-pink-300 mb-6 floating-img shadow-md">
-                <img src="awalan 3.gif" alt="Happy cat" class="w-40 h-40 object-cover rounded-full">
+                <img src="awalan 3.gif" alt="Happy cat" class="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-full">
             </div>
             
             <!-- Box Rangkuman Lucu -->
-            <div class="bg-white rounded-3xl p-6 w-full text-left border-4 border-pink-100 shadow-[0_10px_20px_rgba(255,182,193,0.3)] mb-8 relative">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 w-full text-left border-4 border-pink-100 shadow-[0_10px_20px_rgba(255,182,193,0.3)] mb-8 relative">
                 <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink-200 text-pink-700 text-xs font-black px-4 py-1 rounded-full tracking-widest border-2 border-white">
                     PLAN KITA
                 </div>
-                <div id="final-summary" class="text-gray-700 font-bold space-y-3 mt-3 text-[15px]">
+                <div id="final-summary" class="text-gray-700 font-bold space-y-3 mt-3 text-sm sm:text-[15px]">
                     <!-- Teks dari JS -->
                 </div>
             </div>
             
-            <button id="btn-send-wa" class="bg-gradient-to-b from-emerald-400 to-green-500 text-white font-black py-4 px-8 rounded-full btn-3d w-full text-lg flex items-center justify-center gap-3 border-2 border-green-300 shadow-[0_8px_0_#10b981,0_15px_20px_rgba(16,185,129,0.4)] hover:from-emerald-300 hover:to-green-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+            <button id="btn-send-wa" class="bg-gradient-to-b from-emerald-400 to-green-500 text-white font-black py-3 sm:py-4 px-6 sm:px-8 rounded-full btn-3d w-full text-base sm:text-lg flex items-center justify-center gap-2 sm:gap-3 border-2 border-green-300 shadow-[0_8px_0_#10b981,0_15px_20px_rgba(16,185,129,0.4)] hover:from-emerald-300 hover:to-green-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="sm:w-7 sm:h-7" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c-.003 1.396.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c.003-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
                 </svg>
                 <span>Kirim ke WhatsApp Aku!</span>
             </button>
-            <p class="mt-5 text-sm text-pink-500 font-bold text-center bg-pink-50 px-4 py-2 rounded-full border border-pink-200">Satu klik lagi, kirim WA nya ya! 💌</p>
+            <p class="mt-5 text-xs sm:text-sm text-pink-500 font-bold text-center bg-pink-50 px-4 py-2 rounded-full border border-pink-200">Satu klik lagi, kirim WA nya ya! 💌</p>
         </div>
 
     </div>
 
-    <div id="secret-modal" class="fixed top-8 left-0 right-0 flex justify-center z-50 pointer-events-none px-4 transition-all duration-700 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] transform -translate-y-40 opacity-0">
-        <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_30px_60px_-15px_rgba(236,72,153,0.6)] border-4 border-pink-300 p-6 max-w-sm w-full text-center pointer-events-auto relative overflow-hidden" id="secret-card">
+    <div id="secret-modal" class="fixed top-4 sm:top-8 left-0 right-0 flex justify-center z-50 pointer-events-none px-4 transition-all duration-700 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] transform -translate-y-40 opacity-0">
+        <div class="bg-white/95 backdrop-blur-md rounded-[2rem] sm:rounded-3xl shadow-[0_30px_60px_-15px_rgba(236,72,153,0.6)] border-4 border-pink-300 p-5 sm:p-6 max-w-sm w-full text-center pointer-events-auto relative overflow-hidden" id="secret-card">
             
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70"></div>
             <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70"></div>
 
             <!-- Tampilan awal: Amplop -->
             <div id="secret-closed" class="flex flex-col items-center relative z-10">
-                <div class="text-6xl mb-2 animate-bounce mt-2">💌</div>
-                <h3 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 mb-1">Pesan Rahasia!</h3>
-                <p class="text-pink-400 mb-6 text-sm font-bold">Ada pesan buat kamu nih...</p>
-                <button id="btn-open-secret" class="bg-gradient-to-r from-pink-400 to-fuchsia-500 text-white font-black py-3 px-8 rounded-full shadow-[0_5px_0_#d91b5b] active:shadow-[0_0px_0_#d91b5b] active:translate-y-1 transition-all w-full text-sm">
+                <div class="text-5xl sm:text-6xl mb-2 animate-bounce mt-2">💌</div>
+                <h3 class="text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 mb-1">Pesan Rahasia!</h3>
+                <p class="text-pink-400 mb-5 sm:mb-6 text-xs sm:text-sm font-bold">Ada pesan buat kamu nih...</p>
+                <button id="btn-open-secret" class="bg-gradient-to-r from-pink-400 to-fuchsia-500 text-white font-black py-2.5 sm:py-3 px-6 sm:px-8 rounded-full shadow-[0_5px_0_#d91b5b] active:shadow-[0_0px_0_#d91b5b] active:translate-y-1 transition-all w-full text-sm">
                     Buka Amplop 🔓
                 </button>
             </div>
 
             <!-- Tampilan isi pesan -->
             <div id="secret-opened" class="hidden flex-col items-center relative z-10">
-                <div class="text-5xl mb-3">🐈</div>
-                <h3 class="text-2xl font-black text-pink-500 mb-3 font-serif italic">"See you soon!"</h3>
-                <p class="text-gray-700 mb-6 font-bold leading-relaxed text-sm bg-pink-50 p-3 rounded-2xl border-2 border-dashed border-pink-200">Makasih ya udah mau nemenin. Nanti hari-H nya aku kabarin lagi, kamu tinggal cantik aja siap-siap nanti dijemputt yaa 👋💕</p>
-                <button id="btn-close-secret" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-black py-3 px-6 rounded-full transition-all text-sm w-full border-2 border-slate-300">
+                <div class="text-4xl sm:text-5xl mb-2 sm:mb-3">🐈</div>
+                <h3 class="text-xl sm:text-2xl font-black text-pink-500 mb-2 sm:mb-3 font-serif italic">"See you soon!"</h3>
+                <p class="text-gray-700 mb-5 sm:mb-6 font-bold leading-relaxed text-xs sm:text-sm bg-pink-50 p-3 rounded-2xl border-2 border-dashed border-pink-200">Makasih ya udah mau nemenin. Nanti hari-H nya aku kabarin lagi, kamu tinggal cantik aja siap-siap nanti dijemputt yaa 👋💕</p>
+                <button id="btn-close-secret" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-black py-2.5 sm:py-3 px-6 rounded-full transition-all text-sm w-full border-2 border-slate-300">
                     Tutup Pesan ❌
                 </button>
             </div>
