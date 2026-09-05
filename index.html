@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mainn Yukk!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Font lucu: Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            background-color: #ffe6f2; /* Soft pastel pink */
+            background-image: radial-gradient(#ffb3d9 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+        
+        .heart {
+            position: fixed;
+            top: -10vh;
+            font-size: 1.8rem;
+            animation: fall linear forwards;
+            z-index: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 6px rgba(255, 105, 180, 0.3));
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px) rotate(-2deg); }
+            50% { transform: translateX(8px) rotate(2deg); }
+            75% { transform: translateX(-8px) rotate(-2deg); }
+        }
+        .shake-animation {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .heart-burst {
+            position: fixed;
+            font-size: 2.5rem;
+            z-index: 100;
+            pointer-events: none;
+            animation: burst 1s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            transform: translate(-50%, -50%); 
+        }
+
+        @keyframes burst {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.5) rotate(15deg); opacity: 0; }
+        }
+
+        .hide-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .hide-scroll::-webkit-scrollbar-track {
+            background: #ffe4e6; 
+            border-radius: 10px;
+        }
+        .hide-scroll::-webkit-scrollbar-thumb {
+            background: #fbcfe8; 
+            border-radius: 10px;
+        }
+        
+        .btn-3d {
+            transition: all 0.15s ease;
+            box-shadow: 0 8px 0 #d946ef, 0 15px 20px rgba(217, 70, 239, 0.4);
+        }
+        .btn-3d:active {
+            box-shadow: 0 0px 0 #d946ef, 0 0px 0 rgba(217, 70, 239, 0.4);
+            transform: translateY(8px);
+        }
+        
+        .btn-3d-gray {
+            transition: all 0.15s ease;
+            box-shadow: 0 8px 0 #cbd5e1, 0 15px 20px rgba(148, 163, 184, 0.2);
+        }
+        .btn-3d-gray:active {
+            box-shadow: 0 0px 0 #cbd5e1, 0 0px 0 rgba(148, 163, 184, 0.2);
+            transform: translateY(8px);
+        }
+        
+        /* Animasi mengambang untuk gambar kucing */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .floating-img {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 relative">
+
+    <div id="hearts-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <div class="max-w-md w-full bg-white/95 backdrop-blur-md rounded-[3rem] shadow-[0_20px_60px_-15px_rgba(255,105,180,0.5)] border-4 border-pink-200 p-8 relative z-10 text-center">
+        
+        <!-- Ornamen lucu di pojok atas -->
+        <div class="absolute -top-4 -right-4 text-4xl rotate-12 drop-shadow-md">🎀</div>
+        <div class="absolute -bottom-2 -left-3 text-4xl -rotate-12 drop-shadow-md">✨</div>
+        
+        <!-- STEP 1: Halaman Ajakan Pertama -->
+        <div id="step-1" class="flex flex-col items-center transition-all duration-500">
+            <h1 class="text-3xl font-black text-gray-800 mb-6 drop-shadow-sm leading-tight">
+                Hai Cacaa... <br> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-pink-500 text-4xl">Mau main bareng ga?</span> 🥺
+            </h1>
+            
+            <div class="p-2 bg-pink-50 rounded-[2rem] border-4 border-dashed border-pink-300 mb-8 floating-img shadow-sm">
+                <img src="awalan kucing.gif" alt="Cute begging cat" class="w-48 h-48 object-cover rounded-[1.5rem]">
+            </div>
+            
+            <div class="flex flex-wrap gap-6 items-center justify-center w-full relative min-h-[6rem]">
+                <!-- Tombol Mau 3D -->
+                <button id="btn-yes" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-3 px-10 rounded-full btn-3d text-xl z-20 border-2 border-pink-300">
+                    MAU! 🥰
+                </button>
+                <!-- Tombol Nggak -->
+                <button id="btn-no" class="bg-slate-100 text-slate-500 font-bold py-3 px-8 rounded-full btn-3d-gray text-lg relative z-10 border-2 border-slate-200">
+                    Nggak
+                </button>
+            </div>
+        </div>
+
+        <div id="step-yay" class="hidden opacity-0 flex-col items-center transition-all duration-500">
+            <div class="p-2 bg-yellow-50 rounded-[2rem] border-4 border-dashed border-yellow-300 mb-6 shadow-sm floating-img">
+                <img src="awalan kucing 2.gif" alt="Yay bear" class="w-48 h-48 object-cover rounded-[1.5rem]">
+            </div>
+            
+            <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-pink-500 mb-2 drop-shadow-sm">YAYY!</h1>
+            <p class="text-pink-600 font-bold mb-8 text-xl">Seneng bangetttt! 🎉</p>
+            
+            <button id="btn-continue" class="bg-white border-4 border-pink-200 text-pink-500 hover:bg-pink-50 hover:border-pink-400 font-black py-3 px-8 rounded-full shadow-lg transition-all duration-300 text-lg group flex items-center gap-2 mx-auto">
+                Lanjut <span class="group-hover:translate-x-2 transition-transform text-2xl">👉</span>
+            </button>
+        </div>
+
+        <div id="step-date" class="hidden opacity-0 flex-col items-center transition-all duration-500">
+            <div class="text-5xl mb-2">🗓️</div>
+            <h2 class="text-3xl font-black text-gray-800 mb-2">Atur Waktu Yuk!</h2>
+            <p class="text-pink-500 mb-6 font-bold text-lg">Kapan nih enaknya kita jalan?</p>
+            
+            <div class="w-full mb-6 text-left flex gap-4">
+                <div class="flex-[2]">
+                    <label class="text-sm font-black text-fuchsia-500 ml-2 mb-1 block">TANGGAL</label>
+                    <input type="date" id="date-picker" class="w-full p-4 rounded-2xl border-4 border-pink-100 bg-pink-50 focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 outline-none text-gray-700 font-bold transition-all text-lg shadow-inner cursor-pointer">
+                </div>
+                <div class="flex-[1]">
+                    <label class="text-sm font-black text-fuchsia-500 ml-2 mb-1 block">JAM</label>
+                    <input type="time" id="time-picker" class="w-full p-4 rounded-2xl border-4 border-pink-100 bg-pink-50 focus:border-pink-400 focus:bg-white focus:ring-4 focus:ring-pink-100 outline-none text-gray-700 font-bold transition-all text-lg shadow-inner cursor-pointer">
+                </div>
+            </div>
+
+            <p id="error-date" class="text-white text-sm font-bold mb-6 hidden bg-rose-400 p-3 rounded-xl w-full animate-bounce shadow-lg">⚠️ Tentukan tanggal & jamnya dulu donggg!</p>
+            
+            <button id="btn-next-activity" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-4 px-8 rounded-full btn-3d w-full text-lg mt-2 border-2 border-pink-300">
+                Lanjut Pilih Mainnya ➔
+            </button>
+        </div>
+
+        <div id="step-activity" class="hidden opacity-0 flex-col items-center transition-all duration-500">
+            <div class="text-5xl mb-2">🎡</div>
+            <h2 class="text-3xl font-black text-gray-800 mb-2">Ngapain Aja?</h2>
+            <p class="text-pink-500 mb-6 font-bold">Pilih sesukamu (boleh lebih dari 1 kok) ✨</p>
+            
+            <div class="w-full mb-6 text-left">
+                <!-- Checkbox lucu -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="relative cursor-pointer group">
+                        <input type="checkbox" name="activity" value="Ngopi" class="peer sr-only">
+                        <div class="p-4 border-4 border-pink-100 rounded-2xl bg-white peer-checked:bg-pink-50 peer-checked:border-pink-400 peer-checked:shadow-md transition-all flex items-center justify-between">
+                            <span class="font-bold text-gray-700 peer-checked:text-pink-600">Ngopi ☕</span>
+                            <div class="w-6 h-6 rounded-full border-2 border-pink-200 peer-checked:bg-pink-500 peer-checked:border-pink-500 flex items-center justify-center text-white scale-0 peer-checked:scale-100 transition-transform">✓</div>
+                        </div>
+                    </label>
+                    <label class="relative cursor-pointer group">
+                        <input type="checkbox" name="activity" value="Nge-Gelato" class="peer sr-only">
+                        <div class="p-4 border-4 border-pink-100 rounded-2xl bg-white peer-checked:bg-pink-50 peer-checked:border-pink-400 peer-checked:shadow-md transition-all flex items-center justify-between">
+                            <span class="font-bold text-gray-700 peer-checked:text-pink-600">Nge-Gelato 🍨</span>
+                            <div class="w-6 h-6 rounded-full border-2 border-pink-200 peer-checked:bg-pink-500 peer-checked:border-pink-500 flex items-center justify-center text-white scale-0 peer-checked:scale-100 transition-transform">✓</div>
+                        </div>
+                    </label>
+                    <label class="relative cursor-pointer group">
+                        <input type="checkbox" name="activity" value="Nonton Bioskop" class="peer sr-only">
+                        <div class="p-4 border-4 border-pink-100 rounded-2xl bg-white peer-checked:bg-pink-50 peer-checked:border-pink-400 peer-checked:shadow-md transition-all flex items-center justify-between">
+                            <span class="font-bold text-gray-700 peer-checked:text-pink-600">Nonton 🎥</span>
+                            <div class="w-6 h-6 rounded-full border-2 border-pink-200 peer-checked:bg-pink-500 peer-checked:border-pink-500 flex items-center justify-center text-white scale-0 peer-checked:scale-100 transition-transform">✓</div>
+                        </div>
+                    </label>
+                    <div class="flex items-center p-2 px-4 border-4 border-pink-100 rounded-2xl bg-white focus-within:border-pink-400 focus-within:ring-4 focus-within:ring-pink-100 transition-all">
+                        <span class="mr-2 text-xl">✨</span>
+                        <input type="text" id="custom-activity" placeholder="Ketik ide lain..." class="w-full py-2 bg-transparent outline-none text-gray-700 font-bold placeholder-gray-400">
+                    </div>
+                </div>
+
+                <div id="places-container" class="mt-6 flex flex-col gap-4 w-full">
+                    
+                    <!-- Tempat Ngopi -->
+                    <div id="sub-ngopi" class="hidden p-4 bg-pink-50/50 rounded-3xl border-2 border-dashed border-pink-300 transition-all">
+                        <p class="text-sm font-black text-pink-600 mb-3 text-center">Pilih tempat Ngopi-nya ya: 👇</p>
+                        <div class="flex gap-4 overflow-x-auto pb-3 hide-scroll px-1">
+                            <!-- Radio lucu -->
+                            <label class="flex-shrink-0 cursor-pointer group">
+                                <input type="radio" name="place-ngopi" value="Wheels Coffee Roasters" class="peer sr-only">
+                                <div class="w-32 rounded-2xl border-4 border-white peer-checked:border-pink-500 peer-checked:shadow-lg transition-all overflow-hidden bg-white shadow-sm transform peer-checked:-translate-y-1">
+                                    <img src="ngopi 1.jpg" class="w-full h-20 object-cover opacity-80 peer-checked:opacity-100 transition-opacity">
+                                    <div class="p-2 text-sm font-bold text-center text-gray-700 bg-white">Wheels Coffee Roasters</div>
+                                </div>
+                            </label>
+                            <label class="flex-shrink-0 cursor-pointer group">
+                                <input type="radio" name="place-ngopi" value="Jabarano Coffee" class="peer sr-only">
+                                <div class="w-32 rounded-2xl border-4 border-white peer-checked:border-pink-500 peer-checked:shadow-lg transition-all overflow-hidden bg-white shadow-sm transform peer-checked:-translate-y-1">
+                                    <img src="ngopi 2.jpg" class="w-full h-20 object-cover opacity-80 peer-checked:opacity-100 transition-opacity">
+                                    <div class="p-2 text-sm font-bold text-center text-gray-700 bg-white">Jabarano Coffee</div>
+                                </div>
+                            </label>
+                            <label class="flex-shrink-0 cursor-pointer group">
+                                <input type="radio" name="place-ngopi" value="DAKOFFE" class="peer sr-only">
+                                <div class="w-32 rounded-2xl border-4 border-white peer-checked:border-pink-500 peer-checked:shadow-lg transition-all overflow-hidden bg-white shadow-sm transform peer-checked:-translate-y-1">
+                                    <img src="ngopi 3.png" class="w-full h-20 object-cover opacity-80 peer-checked:opacity-100 transition-opacity">
+                                    <div class="p-2 text-sm font-bold text-center text-gray-700 bg-white">DAKOFFE</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tempat Gelato -->
+                    <div id="sub-gelato" class="hidden p-4 bg-pink-50/50 rounded-3xl border-2 border-dashed border-pink-300 transition-all">
+                        <p class="text-sm font-black text-pink-600 mb-3 text-center">Mau Gelato di mana nih: 👇</p>
+                        <div class="flex gap-4 overflow-x-auto pb-3 hide-scroll px-1">
+                            <label class="flex-shrink-0 cursor-pointer">
+                                <input type="radio" name="place-gelato" value="Tianlala" class="peer sr-only">
+                                <div class="w-32 rounded-2xl border-4 border-white peer-checked:border-pink-500 peer-checked:shadow-lg transition-all overflow-hidden bg-white shadow-sm transform peer-checked:-translate-y-1">
+                                    <img src="es krim 1.png" class="w-full h-20 object-cover opacity-80 peer-checked:opacity-100 transition-opacity">
+                                    <div class="p-2 text-sm font-bold text-center text-gray-700 bg-white">Tianlala</div>
+                                </div>
+                            </label>
+                            <label class="flex-shrink-0 cursor-pointer">
+                                <input type="radio" name="place-gelato" value="Misnow" class="peer sr-only">
+                                <div class="w-32 rounded-2xl border-4 border-white peer-checked:border-pink-500 peer-checked:shadow-lg transition-all overflow-hidden bg-white shadow-sm transform peer-checked:-translate-y-1">
+                                    <img src="es krim 2.png" class="w-full h-20 object-cover opacity-80 peer-checked:opacity-100 transition-opacity">
+                                    <div class="p-2 text-sm font-bold text-center text-gray-700 bg-white">Misnow</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tempat Nonton -->
+                    <div id="sub-nonton" class="hidden p-4 bg-pink-50/50 rounded-3xl border-2 border-dashed border-pink-300 transition-all">
+                        <p class="text-sm font-black text-pink-600 mb-3 text-center">Nontonnya di: 👇</p>
+                        <div class="flex justify-center pb-1">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="place-nonton" value="XXI & IMAX Summarecon Mall" class="peer sr-only">
+                                <div class="w-40 rounded-2xl border-4 border-white peer-checked:border-pink-500 peer-checked:shadow-lg transition-all overflow-hidden bg-white shadow-sm transform peer-checked:-translate-y-1">
+                                    <img src="bioskop.jpg" class="w-full h-24 object-cover opacity-80 peer-checked:opacity-100 transition-opacity">
+                                    <div class="p-2 text-sm font-bold text-center text-gray-700 bg-white">XXI & IMAX Summarecon Mall</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p id="error-activity" class="text-white text-sm font-bold mb-6 hidden bg-rose-400 p-3 rounded-xl w-full animate-bounce shadow-lg">⚠️ Dipilih dulu dong minimal 1! 🥺</p>
+            
+            <button id="btn-confirm" class="bg-gradient-to-b from-fuchsia-400 to-pink-500 text-white font-black py-4 px-8 rounded-full btn-3d w-full text-lg mt-2 border-2 border-pink-300">
+                Kirim Rencananya! 🚀
+            </button>
+        </div>
+
+        <div id="step-3" class="hidden opacity-0 flex-col items-center transition-all duration-500">
+            <h2 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-fuchsia-500 mb-4 drop-shadow-sm leading-tight">YEYY!<br>Sampai Jumpa Nanti! 💕</h2>
+            
+            <div class="p-2 bg-pink-100 rounded-full border-4 border-dashed border-pink-300 mb-6 floating-img shadow-md">
+                <img src="awalan 3.gif" alt="Happy cat" class="w-40 h-40 object-cover rounded-full">
+            </div>
+            
+            <!-- Box Rangkuman Lucu -->
+            <div class="bg-white rounded-3xl p-6 w-full text-left border-4 border-pink-100 shadow-[0_10px_20px_rgba(255,182,193,0.3)] mb-8 relative">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-pink-200 text-pink-700 text-xs font-black px-4 py-1 rounded-full tracking-widest border-2 border-white">
+                    PLAN KITA
+                </div>
+                <div id="final-summary" class="text-gray-700 font-bold space-y-3 mt-3 text-[15px]">
+                    <!-- Teks dari JS -->
+                </div>
+            </div>
+            
+            <button id="btn-send-wa" class="bg-gradient-to-b from-emerald-400 to-green-500 text-white font-black py-4 px-8 rounded-full btn-3d w-full text-lg flex items-center justify-center gap-3 border-2 border-green-300 shadow-[0_8px_0_#10b981,0_15px_20px_rgba(16,185,129,0.4)] hover:from-emerald-300 hover:to-green-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c-.003 1.396.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c.003-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                </svg>
+                <span>Kirim ke WhatsApp Aku!</span>
+            </button>
+            <p class="mt-5 text-sm text-pink-500 font-bold text-center bg-pink-50 px-4 py-2 rounded-full border border-pink-200">Satu klik lagi, kirim WA nya ya! 💌</p>
+        </div>
+
+    </div>
+
+    <div id="secret-modal" class="fixed top-8 left-0 right-0 flex justify-center z-50 pointer-events-none px-4 transition-all duration-700 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] transform -translate-y-40 opacity-0">
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_30px_60px_-15px_rgba(236,72,153,0.6)] border-4 border-pink-300 p-6 max-w-sm w-full text-center pointer-events-auto relative overflow-hidden" id="secret-card">
+            
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70"></div>
+
+            <!-- Tampilan awal: Amplop -->
+            <div id="secret-closed" class="flex flex-col items-center relative z-10">
+                <div class="text-6xl mb-2 animate-bounce mt-2">💌</div>
+                <h3 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500 mb-1">Pesan Rahasia!</h3>
+                <p class="text-pink-400 mb-6 text-sm font-bold">Ada pesan buat kamu nih...</p>
+                <button id="btn-open-secret" class="bg-gradient-to-r from-pink-400 to-fuchsia-500 text-white font-black py-3 px-8 rounded-full shadow-[0_5px_0_#d91b5b] active:shadow-[0_0px_0_#d91b5b] active:translate-y-1 transition-all w-full text-sm">
+                    Buka Amplop 🔓
+                </button>
+            </div>
+
+            <!-- Tampilan isi pesan -->
+            <div id="secret-opened" class="hidden flex-col items-center relative z-10">
+                <div class="text-5xl mb-3">🐈</div>
+                <h3 class="text-2xl font-black text-pink-500 mb-3 font-serif italic">"See you soon!"</h3>
+                <p class="text-gray-700 mb-6 font-bold leading-relaxed text-sm bg-pink-50 p-3 rounded-2xl border-2 border-dashed border-pink-200">Makasih ya udah mau nemenin. Nanti hari-H nya aku kabarin lagi, kamu tinggal cantik aja siap-siap nanti dijemputt yaa 👋💕</p>
+                <button id="btn-close-secret" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-black py-3 px-6 rounded-full transition-all text-sm w-full border-2 border-slate-300">
+                    Tutup Pesan ❌
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Efek Hati Jatuh (Background)
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            // Menambahkan emoji bintang dan bunga agar lebih manis
+            heart.innerHTML = ['💖', '💕', '💗', '🌸', '✨', '🎀'][Math.floor(Math.random() * 6)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            // Variasi ukuran kecil hingga sedang
+            heart.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+            
+            document.getElementById('hearts-container').appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 7000);
+        }
+        setInterval(createHeart, 400);
+
+        // Deklarasi Elemen
+        const step1 = document.getElementById('step-1');
+        const stepYay = document.getElementById('step-yay');
+        const stepDate = document.getElementById('step-date');
+        const stepActivity = document.getElementById('step-activity');
+        const step3 = document.getElementById('step-3');
+        
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+        const btnContinue = document.getElementById('btn-continue');
+        const btnNextActivity = document.getElementById('btn-next-activity');
+        const btnConfirm = document.getElementById('btn-confirm');
+        
+        const errorDate = document.getElementById('error-date');
+        const errorActivity = document.getElementById('error-activity');
+        const finalSummary = document.getElementById('final-summary');
+
+        // Deklarasi Elemen Checkbox Aktivitas & Sub-Tempatnya
+        const actNgopi = document.querySelector('input[value="Ngopi"]');
+        const actGelato = document.querySelector('input[value="Nge-Gelato"]');
+        const actNonton = document.querySelector('input[value="Nonton Bioskop"]');
+
+        const subNgopi = document.getElementById('sub-ngopi');
+        const subGelato = document.getElementById('sub-gelato');
+        const subNonton = document.getElementById('sub-nonton');
+
+        actNgopi.addEventListener('change', (e) => e.target.checked ? subNgopi.classList.remove('hidden') : subNgopi.classList.add('hidden'));
+        actGelato.addEventListener('change', (e) => e.target.checked ? subGelato.classList.remove('hidden') : subGelato.classList.add('hidden'));
+        actNonton.addEventListener('change', (e) => e.target.checked ? subNonton.classList.remove('hidden') : subNonton.classList.add('hidden'));
+
+        const secretModal = document.getElementById('secret-modal');
+        const secretCard = document.getElementById('secret-card');
+        const secretClosed = document.getElementById('secret-closed');
+        const secretOpened = document.getElementById('secret-opened');
+        const btnOpenSecret = document.getElementById('btn-open-secret');
+        const btnCloseSecret = document.getElementById('btn-close-secret');
+
+        let finalWaUrl = ""; 
+
+        async function playYaySound() {
+            await Tone.start(); 
+            const synth = new Tone.Synth({
+                oscillator: { type: "triangle" },
+                envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 1 }
+            }).toDestination();
+            
+            const now = Tone.now();
+            synth.triggerAttackRelease("C5", "16n", now);
+            synth.triggerAttackRelease("F5", "16n", now + 0.1);
+            synth.triggerAttackRelease("A5", "16n", now + 0.2);
+            synth.triggerAttackRelease("C6", "4n", now + 0.32);
+        }
+
+        async function playSurpriseSound() {
+            await Tone.start();
+            const polySynth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: "triangle" }
+            }).toDestination();
+            const now = Tone.now();
+            polySynth.triggerAttackRelease(["C5", "E5", "G5"], "8n", now);
+            polySynth.triggerAttackRelease(["D5", "F#5", "A5"], "8n", now + 0.15);
+            polySynth.triggerAttackRelease(["G5", "B5", "D6"], "4n", now + 0.3);
+        }
+
+        async function playNotifySound() {
+            await Tone.start();
+            const synth = new Tone.Synth({
+                oscillator: { type: "sine" },
+                envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 1 }
+            }).toDestination();
+            const now = Tone.now();
+            synth.triggerAttackRelease("A5", "16n", now);
+            synth.triggerAttackRelease("E6", "8n", now + 0.1);
+        }
+
+        const noTexts = [
+            "Loh kok?", 
+            "Beneran nih?", 
+            "Masa ditolak 🥺", 
+            "Gak salah pencet kan?", 
+            "Coba pikir lagi...", 
+            "Ayodonggg 💕", 
+            "Gabisa klik ini wk 😜"
+        ];
+        let noClickCount = 0;
+        let yesSize = 1;
+
+        btnNo.addEventListener('mouseover', moveNoButton);
+        btnNo.addEventListener('click', moveNoButton);
+
+        function moveNoButton() {
+            noClickCount++;
+            btnNo.innerText = noTexts[noClickCount % noTexts.length];
+            
+            const moveX = (Math.random() - 0.5) * 160; 
+            const moveY = (Math.random() - 0.5) * 160; 
+            
+            btnNo.style.position = ''; 
+            btnNo.style.left = '';
+            btnNo.style.top = '';
+            
+            btnNo.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            
+            // Tombol Yes makin besar
+            yesSize += 0.15;
+            btnYes.style.transform = `scale(${yesSize})`;
+        }
+
+        btnYes.addEventListener('click', () => {
+            playYaySound(); 
+
+            const rect = btnYes.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = ['💖', '💕', '💗', '✨', '🎀', '🥰'][Math.floor(Math.random() * 6)];
+                heart.classList.add('heart-burst');
+                
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 150 + 50; 
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                heart.style.setProperty('--tx', `${tx}px`);
+                heart.style.setProperty('--ty', `${ty}px`);
+                
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 1000);
+            }
+
+            btnYes.style.transform = `scale(${Math.max(0.9, yesSize - 0.1)})`; 
+            
+            setTimeout(() => {
+                btnYes.style.transform = `scale(${yesSize + 0.15})`; 
+                
+                setTimeout(() => {
+                    step1.style.opacity = '0';
+                    setTimeout(() => {
+                        step1.classList.remove('flex');
+                        step1.classList.add('hidden');
+                        
+                        stepYay.classList.remove('hidden');
+                        stepYay.classList.add('flex');
+                        
+                        void stepYay.offsetWidth; 
+                        stepYay.style.opacity = '1';
+                    }, 500);
+                }, 200);
+            }, 100);
+        });
+
+        btnContinue.addEventListener('click', () => {
+            stepYay.style.opacity = '0';
+            setTimeout(() => {
+                stepYay.classList.remove('flex');
+                stepYay.classList.add('hidden');
+                
+                stepDate.classList.remove('hidden');
+                stepDate.classList.add('flex');
+                
+                void stepDate.offsetWidth; 
+                stepDate.style.opacity = '1';
+            }, 500);
+        });
+
+        btnNextActivity.addEventListener('click', () => {
+            const dateValue = document.getElementById('date-picker').value;
+            const timeValue = document.getElementById('time-picker').value;
+            
+            if (!dateValue || !timeValue) {
+                errorDate.classList.remove('hidden');
+                stepDate.classList.add('shake-animation');
+                setTimeout(() => stepDate.classList.remove('shake-animation'), 500);
+                return;
+            }
+            
+            errorDate.classList.add('hidden');
+
+            stepDate.style.opacity = '0';
+            setTimeout(() => {
+                stepDate.classList.remove('flex');
+                stepDate.classList.add('hidden');
+                
+                stepActivity.classList.remove('hidden');
+                stepActivity.classList.add('flex');
+                
+                void stepActivity.offsetWidth; 
+                stepActivity.style.opacity = '1';
+            }, 500);
+        });
+
+        btnConfirm.addEventListener('click', () => {
+            const dateValue = document.getElementById('date-picker').value;
+            const timeValue = document.getElementById('time-picker').value;
+            const checkedActivities = document.querySelectorAll('input[name="activity"]:checked');
+            
+            let selectedActivities = [];
+
+            checkedActivities.forEach(cb => {
+                let actName = cb.value;
+                let place = "";
+                
+                if (actName === "Ngopi") {
+                    const selected = document.querySelector('input[name="place-ngopi"]:checked');
+                    if (selected) place = selected.value;
+                } else if (actName === "Nge-Gelato") {
+                    const selected = document.querySelector('input[name="place-gelato"]:checked');
+                    if (selected) place = selected.value;
+                } else if (actName === "Nonton Bioskop") {
+                    const selected = document.querySelector('input[name="place-nonton"]:checked');
+                    if (selected) place = selected.value;
+                }
+
+                if (place) {
+                    selectedActivities.push(`${actName} (📍 ${place})`);
+                } else {
+                    selectedActivities.push(actName);
+                }
+            });
+
+            const customActivity = document.getElementById('custom-activity').value.trim();
+            if (customActivity) {
+                selectedActivities.push(customActivity);
+            }
+
+            if (selectedActivities.length === 0) {
+                errorActivity.classList.remove('hidden');
+                stepActivity.classList.add('shake-animation');
+                setTimeout(() => stepActivity.classList.remove('shake-animation'), 500);
+                return;
+            }
+            
+            errorActivity.classList.add('hidden');
+
+            playSurpriseSound(); 
+
+            const rect = btnConfirm.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.innerHTML = ['🎉', '🎊', '✨', '🎈', '💖', '🎀'][Math.floor(Math.random() * 6)];
+                confetti.classList.add('heart-burst');
+                
+                confetti.style.left = x + 'px';
+                confetti.style.top = y + 'px';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 250 + 50; 
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                confetti.style.setProperty('--tx', `${tx}px`);
+                confetti.style.setProperty('--ty', `${ty}px`);
+                
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 1000);
+            }
+
+            const dateObj = new Date(dateValue);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = dateObj.toLocaleDateString('id-ID', options);
+            const finalDateTime = `${formattedDate} • Jam ${timeValue}`;
+            
+            // Format List untuk HTML agar lebih cantik
+            const htmlActivities = selectedActivities.map(act => `<li class="flex items-center gap-2"><span class="text-pink-500 text-lg">🌸</span> ${act}</li>`).join('');
+            const waActivitiesText = selectedActivities.join(', ');
+
+            // GANTI NOMOR DI SINI (Contoh: 62895...)
+            const nomorWA = "62895391843741"; 
+            
+            // Gunakan \n untuk baris baru, lalu gunakan encodeURIComponent agar emoji terbaca di WhatsApp
+            const pesanWA = `Hallooo!! \n\nAku udah isi rencana kita nih:\n Waktu: ${finalDateTime}\n Aktivitas: ${waActivitiesText}\n\nGak sabarrr! `;
+            
+            finalWaUrl = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanWA)}`;
+            
+            finalSummary.innerHTML = `
+                <div class="flex items-center gap-2 mb-3 bg-pink-50 p-2 rounded-xl border border-pink-100">
+                    <span class="text-2xl">⏰</span>
+                    <span class="font-black text-pink-600">${finalDateTime}</span>
+                </div>
+                <div class="bg-pink-50 p-3 rounded-xl border border-pink-100">
+                    <div class="font-black text-pink-600 mb-1 flex items-center gap-2"><span class="text-xl">🎡</span>Kita bakal:</div>
+                    <ul class="pl-2 space-y-1 font-bold text-gray-700">
+                        ${htmlActivities}
+                    </ul>
+                </div>
+            `;
+
+            setTimeout(() => {
+                stepActivity.style.opacity = '0';
+                setTimeout(() => {
+                    stepActivity.classList.remove('flex');
+                    stepActivity.classList.add('hidden');
+                    
+                    step3.classList.remove('hidden');
+                    step3.classList.add('flex');
+                    
+                    void step3.offsetWidth; 
+                    step3.style.opacity = '1';
+
+                    setTimeout(() => {
+                        secretModal.classList.remove('-translate-y-40', 'opacity-0');
+                        secretModal.classList.add('translate-y-0', 'opacity-100');
+                        playNotifySound(); 
+                    }, 1000);
+
+                }, 500);
+            }, 400);
+        });
+
+        document.getElementById('btn-send-wa').addEventListener('click', () => {
+            if (finalWaUrl) {
+                window.open(finalWaUrl, '_blank');
+            }
+        });
+
+        btnOpenSecret.addEventListener('click', () => {
+            secretClosed.classList.add('hidden');
+            secretClosed.classList.remove('flex');
+            
+            secretOpened.classList.remove('hidden');
+            secretOpened.classList.add('flex');
+            
+            secretCard.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                secretCard.style.transform = 'scale(1)';
+            }, 150);
+        });
+
+        btnCloseSecret.addEventListener('click', () => {
+            secretModal.classList.remove('translate-y-0', 'opacity-100');
+            secretModal.classList.add('-translate-y-40', 'opacity-0');
+        });
+    </script>
+</body>
+</html>
